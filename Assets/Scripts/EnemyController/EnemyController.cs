@@ -39,8 +39,9 @@ namespace SpaceInvaders
     [SerializeField] const int MoveStepPx = 8;
     [SerializeField] private const short MinXPx = -90;
     [SerializeField] private const short MaxXPx = 90;
+    private const float Step = MoveStepPx * UnitsPerPixel;
 
-    private Vector2 step = new Vector2(MoveStepPx * UnitsPerPixel, 0);
+    private bool stepDown = false;
 
 
 
@@ -139,13 +140,18 @@ namespace SpaceInvaders
       if (moveTimer < movementDelay) return;
       moveTimer = 0;
 
+      if (stepDown)
+      {
+        enemyHolder.position += (Vector3)(Vector2.down * Step);
+        stepDown = false;
+        return;
+      }
 
-
-      enemyHolder.position += (Vector3)(currentDirection * step);
+      enemyHolder.position += (Vector3)(currentDirection * Step);
       if (!HasReachedWall()) return;
 
       currentDirection *= -1;
-      enemyHolder.position += (Vector3)(Vector2.down * step);
+      stepDown = true;
       #endregion
     }
 
