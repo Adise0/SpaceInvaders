@@ -37,6 +37,10 @@ namespace SpaceInvaders
     [SerializeField] private Vector2 currentDirection = Vector2.right;
     /// <summary>The pixels per move</summary>
     [SerializeField] const int MoveStepPx = 8;
+    [SerializeField] private const short MinXPx = -90;
+    [SerializeField] private const short MaxXPx = 90;
+
+    private Vector2 step = new Vector2(MoveStepPx * UnitsPerPixel, 0);
 
 
 
@@ -46,6 +50,8 @@ namespace SpaceInvaders
     private const float UnitsPerPixel = 1f / PixelsPerUnit;
 
     [Header("Formation settings")]
+
+    [SerializeField] private const short TopMarginPx = 48;
     /// <summary>The Y start position in pixels</summary>
     [SerializeField] private const short StartYpx = 120;
     /// <summary>The row spacing in pixels</summary>
@@ -53,10 +59,7 @@ namespace SpaceInvaders
     /// <summary>The column spacing in pixels</summary>
     [SerializeField] private const short ColStepXpx = 16;
 
-    [SerializeField] private const short MinXPx = -98;
-    [SerializeField] private const short MaxXPx = 98;
 
-    private Vector2 step = new Vector2(MoveStepPx * UnitsPerPixel, 0);
 
     [Header("Assets")]
     /// <summary>The enemy holder transform</summary>
@@ -108,7 +111,7 @@ namespace SpaceInvaders
 
       for (short row = 0; row < Rows; row++)
       {
-        int rowYpx = StartYpx - row * RowStepYpx;
+        int rowYpx = StartYpx - TopMarginPx - row * RowStepYpx;
 
         GameObject rowGO = new GameObject($"Row-{row}");
         rowGO.transform.SetParent(enemyHolder, worldPositionStays: false);
