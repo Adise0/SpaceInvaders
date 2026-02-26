@@ -1,0 +1,77 @@
+{
+  "folders": [
+    {
+      "name": "Unity (Background)",
+      "path": ".",
+    },
+    {
+      "name": "Project",
+      "path": "./Assets",
+    },
+  ],
+  "settings": {
+    // =========================
+    // FILES
+    // =========================
+    "files.exclude": {
+      "**/.git": true,
+      "**/.svn": true,
+      "**/.hg": true,
+      "**/CVS": true,
+
+      "**/Library": true,
+      "**/Temp": true,
+      "**/Obj": true,
+      "**/Build": true,
+      "**/Builds": true,
+      "**/Logs": true,
+      "**/UserSettings": true,
+      "**/MemoryCaptures": true,
+      "**/Recordings": true,
+      "**/*.meta": true,
+      "**/*.asset": true,
+    },
+
+    "search.exclude": {
+      "**/Library": true,
+      "**/Temp": true,
+      "**/Obj": true,
+      "**/Build": true,
+      "**/Builds": true,
+      "**/Logs": true,
+    },
+
+    // =========================
+    // UNITY + C# SETTINGS
+    // =========================
+    "files.associations": {
+      "*.shader": "hlsl",
+      "*.compute": "hlsl",
+      "*.cginc": "hlsl",
+      "*.unity": "yaml",
+      "*.prefab": "yaml",
+      "*.asset": "yaml",
+      "*.meta": "yaml",
+    },
+
+    // =========================
+    // UNITY DEBUGGING
+    // =========================
+    "dotnet.defaultSolution": "Assembly-CSharp.sln",
+    "workbench.colorCustomizations": {
+      "commandCenter.border": "#15202b99",
+      "sash.hoverBorder": "#ffacdc",
+      "statusBar.background": "#ff79c6",
+      "statusBar.foreground": "#15202b",
+      "statusBarItem.hoverBackground": "#ff46b0",
+      "statusBarItem.remoteBackground": "#ff79c6",
+      "statusBarItem.remoteForeground": "#15202b",
+      "tab.activeBorder": "#ffacdc",
+      "titleBar.activeBackground": "#ff79c6",
+      "titleBar.activeForeground": "#15202b",
+      "titleBar.inactiveBackground": "#ff79c699",
+      "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#ff79c6",
+  },
+}
