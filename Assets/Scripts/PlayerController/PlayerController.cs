@@ -12,13 +12,16 @@ namespace SpaceInvaders
 
     [Header("Gameplay")]
     /// <summary>The player movement speed</summary>
-    [SerializeField] private float movementSpeed;
+    [SerializeField] private const float MovementStep = 2;
     /// <summary>The atack coolddown</summary>
     [SerializeField] private float atackCooldown;
     /// <summary>The x bounds of the movement</summary>
 
     /// <summary>Input action in charge of movement</summary>
     private InputAction moveAction;
+
+    private float tick = 1f / 60f;
+    private float accumulator;
 
     [Header("Sprite")]
     private float halfWidth;
@@ -32,12 +35,6 @@ namespace SpaceInvaders
       #region Awake
       BindControls();
       ConfigureSprite();
-
-      float upp = 1f / 32f;
-      var p = Camera.main.transform.position;
-      p.x = Mathf.Round(p.x / upp) * upp;
-      p.y = Mathf.Round(p.y / upp) * upp;
-      Camera.main.transform.position = p;
       #endregion
     }
 
@@ -71,16 +68,24 @@ namespace SpaceInvaders
     private void MovePlayer()
     {
       #region MovePlayer
-      Vector2 dir = moveAction.ReadValue<Vector2>();
-      if (dir == Vector2.zero) return;
-      dir.y = 0;
+      accumulator += Time.deltaTime;
+      Vector2 raw = moveAction.ReadValue<Vector2>();
+      int dirSign = raw.x > 0.1f ? 1 : raw.x < -0.1f ? -1 : 0;
 
-      Vector2 delta = dir * movementSpeed * Time.deltaTime;
-      Vector3 newPos = transform.position + (Vector3)delta;
+      while (accumulator >= tick)
+      {
+        accumulator -= tick;
+        if (dirSign == 0) continue;
+        float xStep = dirSign * MovementStep * PixelPerfect.UnitsPerPixel;
 
-      newPos.x = Mathf.Clamp(newPos.x, PixelPerfect.MinXBoundWorld + halfWidth, PixelPerfect.MaxXBoundWorld - halfWidth);
-      newPos.x = Mathf.Round(newPos.x / PixelPerfect.UnitsPerPixel) * PixelPerfect.UnitsPerPixel;
-      transform.position = newPos;
+        Vector2 newPos = transform.position;
+        newPos.x += xStep;
+        newPos.x = Mathf.Clamp(newPos.x, PixelPerfect.MinXBoundWorld + halfWidth, PixelPerfect.MaxXBoundWorld - halfWidth);
+
+        newPos.x = Mathf.Round(newPos.x / PixelPerfect.UnitsPerPixel) * PixelPerfect.UnitsPerPixel;
+        transform.position = newPos;
+      }
+
       #endregion
     }
     #endregion
