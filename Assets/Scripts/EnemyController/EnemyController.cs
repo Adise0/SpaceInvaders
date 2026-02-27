@@ -1,6 +1,7 @@
 
 
 using System.Collections.Generic;
+using SpaceInvaders.Data;
 using UnityEngine;
 
 namespace SpaceInvaders
@@ -37,18 +38,11 @@ namespace SpaceInvaders
     [SerializeField] private Vector2 currentDirection = Vector2.right;
     /// <summary>The pixels per move</summary>
     [SerializeField] const int MoveStepPx = 8;
-    [SerializeField] private const short MinXPx = -90;
-    [SerializeField] private const short MaxXPx = 90;
-    private const float Step = MoveStepPx * UnitsPerPixel;
+
+    private const float Step = MoveStepPx * PixelPerfect.UnitsPerPixel;
 
     private bool stepDown = false;
 
-
-
-    [Header("Pixel perfect settings")]
-    /// <summary>the pixels per unit. This matches the sprite ppu</summary>
-    [SerializeField] private const int PixelsPerUnit = 32;
-    private const float UnitsPerPixel = 1f / PixelsPerUnit;
 
     [Header("Formation settings")]
 
@@ -116,7 +110,7 @@ namespace SpaceInvaders
 
         GameObject rowGO = new GameObject($"Row-{row}");
         rowGO.transform.SetParent(enemyHolder, worldPositionStays: false);
-        rowGO.transform.localPosition = new Vector2(0f, rowYpx * UnitsPerPixel);
+        rowGO.transform.localPosition = new Vector2(0f, rowYpx * PixelPerfect.UnitsPerPixel);
 
         rows[row] = rowGO.transform;
 
@@ -124,7 +118,7 @@ namespace SpaceInvaders
         {
           GameObject enemy = Instantiate(enemyPrefab, rows[row]);
           int xPx = enemyIndex * ColStepXpx - halfWidthPx;
-          enemy.transform.localPosition = new Vector3(xPx * UnitsPerPixel, 0f, 0f);
+          enemy.transform.localPosition = new Vector3(xPx * PixelPerfect.UnitsPerPixel, 0f, 0f);
           enemy.GetComponent<SpriteRenderer>().sprite = enemySprites[row];
           enemies.Add(enemy);
         }
@@ -163,8 +157,8 @@ namespace SpaceInvaders
       {
         if (!enemy) continue;
 
-        if ((enemy.transform.position.x <= MinXPx * UnitsPerPixel && currentDirection == Vector2.left)
-        || (enemy.transform.position.x >= MaxXPx * UnitsPerPixel && currentDirection == Vector2.right)
+        if ((enemy.transform.position.x <= PixelPerfect.MinXBoundWorld && currentDirection == Vector2.left)
+        || (enemy.transform.position.x >= PixelPerfect.MaxXBoundWorld && currentDirection == Vector2.right)
         ) return true;
       }
       return false;

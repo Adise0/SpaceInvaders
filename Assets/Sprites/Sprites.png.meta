@@ -671,9 +671,9 @@ TextureImporter:
       name: Sprites_16
       rect:
         serializedVersion: 2
-        x: 3
+        x: 1
         y: 71
-        width: 13
+        width: 16
         height: 8
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
