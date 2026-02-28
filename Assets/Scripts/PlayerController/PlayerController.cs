@@ -46,7 +46,7 @@ namespace SpaceInvaders
 
     #region Methods
     /// <summary>Aplyes damage to the player</summary>
-    public void TakDamage(GameObject bullet)
+    public void TakDamage(Bullet bullet)
     {
       #region TakDamage
 
