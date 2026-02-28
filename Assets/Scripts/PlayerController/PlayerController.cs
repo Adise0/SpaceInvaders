@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 namespace SpaceInvaders
 {
   /// <summary>Hanndles the player movement and shooting</summary>
-  public class PlayerController : MonoBehaviour
+  public class PlayerController : MonoBehaviour, IDamagable
   {
     #region Data
 
@@ -15,7 +15,7 @@ namespace SpaceInvaders
     [SerializeField] private const float MovementStep = 2;
     /// <summary>The atack coolddown</summary>
     [SerializeField] private float atackCooldown;
-    /// <summary>The x bounds of the movement</summary>
+
 
     /// <summary>Input action in charge of movement</summary>
     private InputAction moveAction;
@@ -48,6 +48,14 @@ namespace SpaceInvaders
     #endregion
 
     #region Methods
+    /// <summary>Aplyes damage to the player</summary>
+    public void TakDamage(GameObject bullet)
+    {
+      #region TakDamage
+
+      #endregion
+    }
+
     /// <summary>Configures the sprite related aspects</summary>
     private void ConfigureSprite()
     {
