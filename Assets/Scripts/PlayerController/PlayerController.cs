@@ -20,9 +20,6 @@ namespace SpaceInvaders
     /// <summary>Input action in charge of movement</summary>
     private InputAction moveAction;
 
-    private float tick = 1f / 60f;
-    private float accumulator;
-
     [Header("Sprite")]
     private float halfWidth;
     #endregion
@@ -38,8 +35,8 @@ namespace SpaceInvaders
       #endregion
     }
 
-    /// <summary>Ran by Unity each frame</summary>
-    private void Update()
+    /// <summary>Ran by Unity each fixed tick</summary>
+    private void FixedUpdate()
     {
       #region Update
       MovePlayer();
@@ -76,23 +73,20 @@ namespace SpaceInvaders
     private void MovePlayer()
     {
       #region MovePlayer
-      accumulator += Time.deltaTime;
       Vector2 raw = moveAction.ReadValue<Vector2>();
       int dirSign = raw.x > 0.1f ? 1 : raw.x < -0.1f ? -1 : 0;
 
-      while (accumulator >= tick)
-      {
-        accumulator -= tick;
-        if (dirSign == 0) continue;
-        float xStep = dirSign * MovementStep * PixelPerfect.UnitsPerPixel;
 
-        Vector2 newPos = transform.position;
-        newPos.x += xStep;
-        newPos.x = Mathf.Clamp(newPos.x, PixelPerfect.MinXBoundWorld + halfWidth, PixelPerfect.MaxXBoundWorld - halfWidth);
+      if (dirSign == 0) return;
+      float xStep = dirSign * MovementStep * PixelPerfect.UnitsPerPixel;
 
-        newPos.x = Mathf.Round(newPos.x / PixelPerfect.UnitsPerPixel) * PixelPerfect.UnitsPerPixel;
-        transform.position = newPos;
-      }
+      Vector2 newPos = transform.position;
+      newPos.x += xStep;
+      newPos.x = Mathf.Clamp(newPos.x, PixelPerfect.MinXBoundWorld + halfWidth, PixelPerfect.MaxXBoundWorld - halfWidth);
+
+      newPos.x = Mathf.Round(newPos.x / PixelPerfect.UnitsPerPixel) * PixelPerfect.UnitsPerPixel;
+      transform.position = newPos;
+
 
       #endregion
     }

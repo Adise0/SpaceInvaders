@@ -87,8 +87,8 @@ namespace SpaceInvaders
       #endregion
     }
 
-    /// <summary>Ran by Unity each frame</summary>
-    private void Update()
+    /// <summary>Ran by Unity each fixed tick</summary>
+    private void FixedUpdate()
     {
       #region Update
       MoveEnemies();
@@ -130,7 +130,7 @@ namespace SpaceInvaders
     private void MoveEnemies()
     {
       #region MoveEnemies
-      moveTimer += Time.deltaTime;
+      moveTimer += Time.fixedDeltaTime;
       if (moveTimer < movementDelay) return;
       moveTimer = 0;
 
