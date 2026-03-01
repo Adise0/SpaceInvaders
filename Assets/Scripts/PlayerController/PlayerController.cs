@@ -25,6 +25,8 @@ namespace SpaceInvaders
     private InputAction moveAction;
     private InputAction shootAction;
 
+    public short lifes;
+
     private bool shootActionQueed = false;
 
     [Header("Sprite")]
@@ -80,7 +82,9 @@ namespace SpaceInvaders
     public void TakDamage(Bullet bullet)
     {
       #region TakDamage
-
+      lifes--;
+      if (lifes > 0) return;
+      // TODO: Game over
       #endregion
     }
 
