@@ -14,5 +14,7 @@ namespace SpaceInvaders.Data
 
     public const float MinXBoundWorld = MinXBoundPx * UnitsPerPixel;
     public const float MaxXBoundWorld = MaxXBoundPx * UnitsPerPixel;
+
+    public const float BunkerYWorld = -1.75f;
   }
 }

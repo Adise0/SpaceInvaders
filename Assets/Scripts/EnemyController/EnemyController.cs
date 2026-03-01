@@ -33,13 +33,15 @@ namespace SpaceInvaders
     /// <summary>The movement timer</summary>
     private float moveTimer = 0;
     /// <summary>The delay between movements</summary>
-    [SerializeField] private float movementDelay;
+    [SerializeField] float movementDelay = 1;
     /// <summary>The current move direciton</summary>
     [SerializeField] private Vector2 currentDirection = Vector2.right;
     /// <summary>The pixels per move</summary>
-    [SerializeField] const int MoveStepPx = 8;
+    [SerializeField] const int MoveStepXPx = 2;
+    [SerializeField] const int MoveStepYPx = 8;
 
-    private const float Step = MoveStepPx * PixelPerfect.UnitsPerPixel;
+    private const float StepX = MoveStepXPx * PixelPerfect.UnitsPerPixel;
+    private const float StepY = MoveStepYPx * PixelPerfect.UnitsPerPixel;
 
     private bool stepDown = false;
 
@@ -102,6 +104,8 @@ namespace SpaceInvaders
     {
       #region RemoveEnemy
       enemies.Remove(enemy);
+      movementDelay = enemies.Count / 60f;
+      movementDelay = Mathf.Max(movementDelay, 1f / 60f);
       #endregion
     }
 
@@ -109,6 +113,8 @@ namespace SpaceInvaders
     private void InitializeEnemies()
     {
       #region InitializeEnemies
+      movementDelay = 1;
+
       int formationWidthPx = (EnemiesPerRow - 1) * ColStepXpx;
       int halfWidthPx = formationWidthPx / 2;
 
@@ -149,12 +155,21 @@ namespace SpaceInvaders
 
       if (stepDown)
       {
-        enemyHolder.position += (Vector3)(Vector2.down * Step);
+        enemyHolder.position += (Vector3)(Vector2.down * StepY);
         stepDown = false;
+        foreach (Enemy enemy in enemies)
+        {
+          if (enemy.transform.position.y <= PixelPerfect.BunkerYWorld)
+          {
+            // TODO: Game over
+            return;
+          }
+        }
         return;
       }
 
-      enemyHolder.position += (Vector3)(currentDirection * Step);
+
+      enemyHolder.position += (Vector3)(currentDirection * StepX);
       if (!HasReachedWall()) return;
 
       currentDirection *= -1;

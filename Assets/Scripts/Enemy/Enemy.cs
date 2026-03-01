@@ -46,6 +46,7 @@ namespace SpaceInvaders
     {
       #region TakDamage
       isDead = true;
+      transform.SetParent(null);
       GetComponent<BoxCollider2D>().enabled = false;
       spriteRenderer.sprite = deathSprite;
       Destroy(gameObject, 0.5f);

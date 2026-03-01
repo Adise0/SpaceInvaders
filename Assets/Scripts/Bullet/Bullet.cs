@@ -14,6 +14,7 @@ namespace SpaceInvaders
     private int stepPx;
     private Vector2 dir;
     private Vector2 prevPos;
+    private bool didHit = false;
 
     private const int Lifetime = 1;
     private Action onDestroy;
@@ -33,10 +34,12 @@ namespace SpaceInvaders
     private void OnTriggerEnter2D(Collider2D collision)
     {
       #region OnTriggerEnter2D
+      if (didHit) return;
+
       foreach (MonoBehaviour behaviour in collision.gameObject.GetComponents<MonoBehaviour>())
       {
         if (behaviour is not IDamagable foundComponent) continue;
-
+        didHit = true;
         foundComponent?.TakDamage(this);
         Destroy(gameObject);
         break;
