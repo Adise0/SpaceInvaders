@@ -46,6 +46,23 @@ namespace SpaceInvaders
     private bool stepDown = false;
 
 
+    [Header("Shooting")]
+    private float reloadTime = 2.4f;
+    private float timeSinceLastShot;
+    private int nOfBullets;
+    public GameObject bulletPrefab;
+
+    public GameObject player;
+
+
+    private Dictionary<BulletType, bool> bulletSlots = new()
+    {
+      {BulletType.Plunger, false},
+      {BulletType.Rolling, false},
+      {BulletType.Squigilly, false}
+    };
+    private int nextSlotIndex;
+
     [Header("Formation settings")]
 
     [SerializeField] private const short TopMarginPx = 48;
@@ -94,6 +111,7 @@ namespace SpaceInvaders
     {
       #region Update
       MoveEnemies();
+      Shoot();
       #endregion
     }
     #endregion
@@ -134,6 +152,8 @@ namespace SpaceInvaders
           int xPx = enemyIndex * ColStepXpx - halfWidthPx;
           enemy.transform.localPosition = new Vector3(xPx * PixelPerfect.UnitsPerPixel, 0f, 0f);
           Enemy controller = enemy.GetComponent<Enemy>();
+          controller.col = enemyIndex;
+          controller.row = row;
           controller.sprites[0] = enemySprites[row * 2];
           controller.sprites[1] = enemySprites[row * 2 + 1];
           enemy.GetComponent<SpriteRenderer>().sprite = controller.sprites[0];
@@ -190,6 +210,74 @@ namespace SpaceInvaders
         ) return true;
       }
       return false;
+      #endregion
+    }
+
+    /// <summary>Attempts to shoot a bullet</summary>
+    private void Shoot()
+    {
+      #region Shoot
+      timeSinceLastShot += Time.fixedDeltaTime;
+      if (nOfBullets >= 3) return;
+      if (timeSinceLastShot < reloadTime) return;
+
+
+      for (int i = 0; i < bulletSlots.Count; i++)
+      {
+        BulletType type = (BulletType)((nextSlotIndex + i) % 3);
+        if (bulletSlots[type]) continue;
+
+        int col = (type == BulletType.Rolling)
+      ? GetClosestPlayerCol()
+      : Random.Range(0, EnemiesPerRow);
+
+        if (col == -1) continue;
+        Enemy shooter = enemies.FindLast((Enemy e) => e.col == col);
+        if (!shooter) continue;
+
+        SpawnBullet(type, shooter);
+        bulletSlots[type] = true;
+        nextSlotIndex = ((int)type + 1) % 3;
+        nOfBullets++;
+        timeSinceLastShot = 0f;
+        break;
+      }
+
+
+      #endregion
+    }
+
+    /// <summary>Gets the closest column to the player with alive enemies</summary>
+    private int GetClosestPlayerCol()
+    {
+      #region GetClosestPlayerCol
+      int closestColumn = -1;
+      float minDistance = float.PositiveInfinity;
+      for (int col = 0; col < EnemiesPerRow; col++)
+      {
+        Enemy rowEnemy = enemies.Find((Enemy e) => e.col == col);
+        if (!rowEnemy) continue;
+        Vector2 enemyX = new Vector2(rowEnemy.transform.position.x, 0);
+        Vector2 playerX = new Vector2(player.transform.position.x, 0);
+        float colDistance = Mathf.Abs(rowEnemy.transform.position.x - player.transform.position.x);
+        if (colDistance >= minDistance) continue;
+        minDistance = colDistance;
+        closestColumn = col;
+      }
+      return closestColumn;
+      #endregion
+    }
+
+    /// <summary>Method</summary>
+    private void SpawnBullet(BulletType type, Enemy shooter)
+    {
+      #region SpawnBullet
+      GameObject instantiatedBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+      instantiatedBullet.GetComponent<Bullet>().Init(type, () =>
+      {
+        nOfBullets--;
+        bulletSlots[type] = false;
+      });
       #endregion
     }
     #endregion

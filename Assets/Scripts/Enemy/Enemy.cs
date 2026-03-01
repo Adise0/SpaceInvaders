@@ -11,6 +11,11 @@ namespace SpaceInvaders
     public Sprite deathSprite;
     private short currentSprite = 0;
 
+
+    // I don't like this and i would to it array-based but I'm runing out of time!
+    public int row;
+    public int col;
+
     public bool isDead = false;
     private SpriteRenderer spriteRenderer;
     #endregion

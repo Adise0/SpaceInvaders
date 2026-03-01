@@ -15,9 +15,9 @@ namespace SpaceInvaders
     private Vector2 dir;
     private Vector2 prevPos;
     private bool didHit = false;
-
-    private const int Lifetime = 1;
     private Action onDestroy;
+
+    private SpriteRenderer spriteRenderer;
     #endregion
 
 
@@ -27,6 +27,7 @@ namespace SpaceInvaders
     {
       #region FixedUpdate
       Move();
+      Die();
       #endregion
     }
 
@@ -62,14 +63,16 @@ namespace SpaceInvaders
     public void Init(BulletType type, Action onDestroy)
     {
       #region Init
+      spriteRenderer = GetComponent<SpriteRenderer>();
+
       this.type = type;
       this.onDestroy = onDestroy;
       stepPx = type == BulletType.Player ? 4 : 3;
       dir = type == BulletType.Player ? Vector2.up : Vector2.down;
-
-      Destroy(gameObject, Lifetime);
       #endregion
     }
+
+
 
 
     /// <summary>Moves the bullet each tick</summary>
@@ -78,6 +81,15 @@ namespace SpaceInvaders
       #region Move
       prevPos = transform.position;
       transform.position += (Vector3)(dir * stepPx * PixelPerfect.UnitsPerPixel);
+      #endregion
+    }
+
+    /// <summary>Kills the bullet</summary>
+    private void Die()
+    {
+      #region Die
+      if (transform.position.y < PixelPerfect.TopBoundPx * PixelPerfect.UnitsPerPixel) return;
+      Destroy(gameObject);
       #endregion
     }
 
