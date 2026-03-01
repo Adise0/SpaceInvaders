@@ -11,6 +11,7 @@ namespace SpaceInvaders
     public Sprite deathSprite;
     private short currentSprite = 0;
 
+    public bool isDead = false;
     private SpriteRenderer spriteRenderer;
     #endregion
 
@@ -29,6 +30,14 @@ namespace SpaceInvaders
       #region FixedUpdate
       #endregion
     }
+
+    /// <summary>Ran by Unity on destroy</summary>
+    private void OnDestroy()
+    {
+      #region OnDestroy
+      EnemyController.Singleton.RemoveEnemy(this);
+      #endregion
+    }
     #endregion
 
     #region Methods
@@ -36,7 +45,7 @@ namespace SpaceInvaders
     public void TakDamage(Bullet bullet)
     {
       #region TakDamage
-
+      isDead = true;
       GetComponent<BoxCollider2D>().enabled = false;
       spriteRenderer.sprite = deathSprite;
       Destroy(gameObject, 0.5f);
@@ -51,10 +60,12 @@ namespace SpaceInvaders
       #endregion
     }
 
-    /// <summary>Method</summary>
+    /// <summary>Changes this enemy sprite</summary>
     public void ChangeSprite()
     {
       #region ChangeSprite
+      if (isDead) return;
+
       currentSprite++;
       if (currentSprite >= sprites.Length) currentSprite = 0;
       spriteRenderer.sprite = sprites[currentSprite];

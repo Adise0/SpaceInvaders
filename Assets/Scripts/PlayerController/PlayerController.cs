@@ -37,7 +37,6 @@ namespace SpaceInvaders
     private void Awake()
     {
       #region Awake
-      BindControls();
       ConfigureSprite();
       #endregion
     }
@@ -56,6 +55,22 @@ namespace SpaceInvaders
       #region Update
       MovePlayer();
       Shoot();
+      #endregion
+    }
+
+    /// <summary>Ran by Unity on enable</summary>
+    private void OnEnable()
+    {
+      #region OnEnable
+      BindControls();
+      #endregion
+    }
+
+    /// <summary>Ran by Unity on disable</summary>
+    private void OnDisable()
+    {
+      #region OnDisable
+      playerControls.Disable();
       #endregion
     }
     #endregion

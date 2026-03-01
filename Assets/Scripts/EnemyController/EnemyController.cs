@@ -97,6 +97,14 @@ namespace SpaceInvaders
     #endregion
 
     #region Methods
+    /// <summary>Removes the passed enemy from the arrat</summary>
+    public void RemoveEnemy(Enemy enemy)
+    {
+      #region RemoveEnemy
+      enemies.Remove(enemy);
+      #endregion
+    }
+
     /// <summary>Spawns and configures all enemies</summary>
     private void InitializeEnemies()
     {

@@ -33,9 +33,14 @@ namespace SpaceInvaders
     private void OnTriggerEnter2D(Collider2D collision)
     {
       #region OnTriggerEnter2D
-      TryGetComponent(out IDamagable foundComponent);
-      foundComponent?.TakDamage(this);
-      Destroy(gameObject);
+      foreach (MonoBehaviour behaviour in collision.gameObject.GetComponents<MonoBehaviour>())
+      {
+        if (behaviour is not IDamagable foundComponent) continue;
+
+        foundComponent?.TakDamage(this);
+        Destroy(gameObject);
+        break;
+      }
       #endregion
     }
 
