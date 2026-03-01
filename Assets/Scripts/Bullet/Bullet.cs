@@ -33,8 +33,7 @@ namespace SpaceInvaders
     private void OnTriggerEnter2D(Collider2D collision)
     {
       #region OnTriggerEnter2D
-      IDamagable foundComponent;
-      TryGetComponent<IDamagable>(out foundComponent);
+      TryGetComponent(out IDamagable foundComponent);
       foundComponent?.TakDamage(this);
       #endregion
     }
