@@ -15,7 +15,7 @@ namespace SpaceInvaders
     private Vector2 dir;
     private Vector2 prevPos;
 
-    private const int Lifetime = 5;
+    private const int Lifetime = 1;
     private Action onDestroy;
     #endregion
 
