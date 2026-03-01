@@ -15,7 +15,7 @@ namespace SpaceInvaders
     private Vector2 dir;
     private Vector2 prevPos;
 
-    private int lifetime = 5000;
+    private const int Lifetime = 5;
     private Action onDestroy;
     #endregion
 
@@ -59,7 +59,7 @@ namespace SpaceInvaders
       stepPx = type == BulletType.Player ? 4 : 3;
       dir = type == BulletType.Player ? Vector2.up : Vector2.down;
 
-      _ = Die();
+      Destroy(gameObject, Lifetime);
       #endregion
     }
 
@@ -73,14 +73,6 @@ namespace SpaceInvaders
       #endregion
     }
 
-    /// <summary>Method</summary>
-    private async Task Die()
-    {
-      #region HandleLife
-      await Task.Delay(lifetime);
-      Destroy(gameObject);
-      #endregion
-    }
     #endregion
 
   }
