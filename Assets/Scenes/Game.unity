@@ -222,7 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57f1f83838cf868c4897c8d37e4bebd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpaceInvaders.PlayerController
-  movementSpeed: 10
   atackCooldown: 0
 --- !u!1 &693351620
 GameObject:
