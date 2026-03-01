@@ -17,7 +17,7 @@ namespace SpaceInvaders
     private void SetupSingleton()
     {
       #region SetupSingleton
-      if (Singleton != null & Singleton != this) { Destroy(this); return; }
+      if (Singleton != null && Singleton != this) { Destroy(this); return; }
       Singleton = this;
       #endregion
     }
@@ -47,7 +47,7 @@ namespace SpaceInvaders
 
 
     [Header("Shooting")]
-    private float reloadTime = 2.4f;
+    private float reloadTime = 0.35f;
     private float timeSinceLastShot;
     private int nOfBullets;
     public GameObject bulletPrefab;
@@ -232,7 +232,16 @@ namespace SpaceInvaders
       : Random.Range(0, EnemiesPerRow);
 
         if (col == -1) continue;
-        Enemy shooter = enemies.FindLast((Enemy e) => e.col == col);
+        List<Enemy> possibleShooters = enemies.FindAll(e => e != null && e.col == col);
+        Enemy shooter = null;
+        int lowest = -1;
+        foreach (Enemy enemy in possibleShooters)
+        {
+          if (enemy.row <= lowest) continue;
+          shooter = enemy;
+          lowest = enemy.row;
+        }
+
         if (!shooter) continue;
 
         SpawnBullet(type, shooter);
@@ -255,7 +264,7 @@ namespace SpaceInvaders
       float minDistance = float.PositiveInfinity;
       for (int col = 0; col < EnemiesPerRow; col++)
       {
-        Enemy rowEnemy = enemies.Find((Enemy e) => e.col == col);
+        Enemy rowEnemy = enemies.Find(e => e != null && e.col == col);
         if (!rowEnemy) continue;
         Vector2 enemyX = new Vector2(rowEnemy.transform.position.x, 0);
         Vector2 playerX = new Vector2(player.transform.position.x, 0);
@@ -272,7 +281,8 @@ namespace SpaceInvaders
     private void SpawnBullet(BulletType type, Enemy shooter)
     {
       #region SpawnBullet
-      GameObject instantiatedBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+      Debug.Log($"Shooting from {shooter.col} {shooter.row}");
+      GameObject instantiatedBullet = Instantiate(bulletPrefab, shooter.transform.position, Quaternion.identity);
       instantiatedBullet.GetComponent<Bullet>().Init(type, () =>
       {
         nOfBullets--;

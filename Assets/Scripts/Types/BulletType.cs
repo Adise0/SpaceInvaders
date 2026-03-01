@@ -4,9 +4,9 @@ namespace SpaceInvaders
 {
   public enum BulletType
   {
+    Plunger,
     Rolling,
     Squigilly,
-    Plunger,
     Player
   }
 }

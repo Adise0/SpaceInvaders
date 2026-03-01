@@ -636,6 +636,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpaceInvaders.EnemyController
   movementDelay: 0
   currentDirection: {x: 1, y: 0}
+  bulletPrefab: {fileID: 2966429059808618479, guid: b1178d201e9c63ad59d7acfecb5cbe12, type: 3}
+  player: {fileID: 450411765}
   enemyHolder: {fileID: 1287047923}
   enemyPrefab: {fileID: 2228492810161042951, guid: a82703825acb80b5692476542c174fc7, type: 3}
   enemySprites:

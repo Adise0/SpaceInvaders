@@ -45,6 +45,22 @@ namespace SpaceInvaders
         Destroy(gameObject);
         break;
       }
+
+      // IDamagable damagable;
+      // if (type == BulletType.Player)
+      // {
+      //   TryGetComponent(out Enemy foundEnemy);
+      //   damagable = foundEnemy;
+      // }
+      // else
+      // {
+      //   TryGetComponent(out PlayerController player);
+      //   damagable = player;
+      // }
+
+      // didHit = true;
+      // damagable?.TakDamage(this);
+      // Destroy(gameObject);
       #endregion
     }
 
