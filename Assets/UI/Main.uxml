@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; flex-shrink: 1; justify-content: flex-end; align-items: flex-start;">
+        <ui:VisualElement name="Holder" style="flex-grow: 0; flex-direction: row;">
+            <ui:Label text="Lifes" name="LifesLabel" style="font-size: 10px; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Assets/UI/space_invaders.ttf?fileID=12800000&amp;guid=24232e70ebbe8b6049457370ea186769&amp;type=3#space_invaders&quot;); flex-shrink: 1; justify-content: center; align-items: flex-start; -unity-text-align: middle-left;" />
+            <ui:Label text="3&#10;" name="L" style="-unity-text-align: middle-left; -unity-font-definition: url(&quot;project://database/Assets/UI/space_invaders.ttf?fileID=12800000&amp;guid=24232e70ebbe8b6049457370ea186769&amp;type=3#space_invaders&quot;); font-size: 10px; color: rgb(255, 255, 255);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
