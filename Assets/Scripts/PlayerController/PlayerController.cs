@@ -6,22 +6,26 @@ using UnityEngine.InputSystem;
 namespace SpaceInvaders
 {
   /// <summary>Hanndles the player movement and shooting</summary>
-  public class PlayerController : MonoBehaviour
+  public class PlayerController : MonoBehaviour, IDamagable
   {
     #region Data
 
     [Header("Gameplay")]
     /// <summary>The player movement speed</summary>
     [SerializeField] private const float MovementStep = 2;
-    /// <summary>The atack coolddown</summary>
-    [SerializeField] private float atackCooldown;
-    /// <summary>The x bounds of the movement</summary>
+
+    [SerializeField] private bool hasActiveBullet;
+
+    [SerializeField] private GameObject bulletPrefab;
+
 
     /// <summary>Input action in charge of movement</summary>
-    private InputAction moveAction;
+    private PlayerControls playerControls;
 
-    private float tick = 1f / 60f;
-    private float accumulator;
+    private InputAction moveAction;
+    private InputAction shootAction;
+
+    private bool shootActionQueed = false;
 
     [Header("Sprite")]
     private float halfWidth;
@@ -38,16 +42,33 @@ namespace SpaceInvaders
       #endregion
     }
 
-    /// <summary>Ran by Unity each frame</summary>
+    /// <summary>Ran by unity each frame</summary>
     private void Update()
     {
       #region Update
+      CheckShootAction();
+      #endregion
+    }
+
+    /// <summary>Ran by Unity each fixed tick</summary>
+    private void FixedUpdate()
+    {
+      #region Update
       MovePlayer();
+      Shoot();
       #endregion
     }
     #endregion
 
     #region Methods
+    /// <summary>Aplyes damage to the player</summary>
+    public void TakDamage(Bullet bullet)
+    {
+      #region TakDamage
+
+      #endregion
+    }
+
     /// <summary>Configures the sprite related aspects</summary>
     private void ConfigureSprite()
     {
@@ -60,7 +81,19 @@ namespace SpaceInvaders
     private void BindControls()
     {
       #region BindControls
-      moveAction = InputSystem.actions["Move"];
+      playerControls = new PlayerControls();
+      playerControls.Enable();
+      moveAction = playerControls.Player.Move;
+      shootAction = playerControls.Player.Shoot;
+      #endregion
+    }
+
+    /// <summary>Checks if the should action was triggered</summary>
+    private void CheckShootAction()
+    {
+      #region CheckShootAction
+      if (shootActionQueed) return;
+      if (shootAction.WasPressedThisFrame()) shootActionQueed = true;
       #endregion
     }
 
@@ -68,24 +101,40 @@ namespace SpaceInvaders
     private void MovePlayer()
     {
       #region MovePlayer
-      accumulator += Time.deltaTime;
       Vector2 raw = moveAction.ReadValue<Vector2>();
       int dirSign = raw.x > 0.1f ? 1 : raw.x < -0.1f ? -1 : 0;
 
-      while (accumulator >= tick)
+
+      if (dirSign == 0) return;
+      float xStep = dirSign * MovementStep * PixelPerfect.UnitsPerPixel;
+
+      Vector2 newPos = transform.position;
+      newPos.x += xStep;
+      newPos.x = Mathf.Clamp(newPos.x, PixelPerfect.MinXBoundWorld + halfWidth, PixelPerfect.MaxXBoundWorld - halfWidth);
+
+      newPos.x = Mathf.Round(newPos.x / PixelPerfect.UnitsPerPixel) * PixelPerfect.UnitsPerPixel;
+      transform.position = newPos;
+
+
+      #endregion
+    }
+
+
+    /// <summary>Handles the shooting</summary>
+    private void Shoot()
+    {
+      #region Shoot
+      if (!shootActionQueed) return;
+      shootActionQueed = false;
+      if (hasActiveBullet) return;
+      hasActiveBullet = true;
+
+
+      GameObject instantiatedBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+      instantiatedBullet.GetComponent<Bullet>().Init(BulletType.Player, () =>
       {
-        accumulator -= tick;
-        if (dirSign == 0) continue;
-        float xStep = dirSign * MovementStep * PixelPerfect.UnitsPerPixel;
-
-        Vector2 newPos = transform.position;
-        newPos.x += xStep;
-        newPos.x = Mathf.Clamp(newPos.x, PixelPerfect.MinXBoundWorld + halfWidth, PixelPerfect.MaxXBoundWorld - halfWidth);
-
-        newPos.x = Mathf.Round(newPos.x / PixelPerfect.UnitsPerPixel) * PixelPerfect.UnitsPerPixel;
-        transform.position = newPos;
-      }
-
+        hasActiveBullet = false;
+      });
       #endregion
     }
     #endregion

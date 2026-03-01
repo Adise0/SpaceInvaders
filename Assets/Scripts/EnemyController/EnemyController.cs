@@ -62,12 +62,12 @@ namespace SpaceInvaders
     /// <summary>The base enemy prefab</summary>
     [SerializeField] private GameObject enemyPrefab;
     /// <summary>The store of enemy sprites</summary>
-    [SerializeField] private Sprite[] enemySprites = new Sprite[Rows];
+    [SerializeField] private Sprite[] enemySprites = new Sprite[Rows * 2];
 
     /// <summary>The row transforms</summary>
     private Transform[] rows = new Transform[Rows];
     /// <summary>The store of all enemies</summary>
-    private List<GameObject> enemies = new();
+    private List<Enemy> enemies = new();
     #endregion
 
     #region Unity
@@ -87,8 +87,8 @@ namespace SpaceInvaders
       #endregion
     }
 
-    /// <summary>Ran by Unity each frame</summary>
-    private void Update()
+    /// <summary>Ran by Unity each fixed tick</summary>
+    private void FixedUpdate()
     {
       #region Update
       MoveEnemies();
@@ -119,8 +119,11 @@ namespace SpaceInvaders
           GameObject enemy = Instantiate(enemyPrefab, rows[row]);
           int xPx = enemyIndex * ColStepXpx - halfWidthPx;
           enemy.transform.localPosition = new Vector3(xPx * PixelPerfect.UnitsPerPixel, 0f, 0f);
-          enemy.GetComponent<SpriteRenderer>().sprite = enemySprites[row];
-          enemies.Add(enemy);
+          Enemy controller = enemy.GetComponent<Enemy>();
+          controller.sprites[0] = enemySprites[row * 2];
+          controller.sprites[1] = enemySprites[row * 2 + 1];
+          enemy.GetComponent<SpriteRenderer>().sprite = controller.sprites[0];
+          enemies.Add(controller);
         }
       }
       #endregion
@@ -130,9 +133,11 @@ namespace SpaceInvaders
     private void MoveEnemies()
     {
       #region MoveEnemies
-      moveTimer += Time.deltaTime;
+      moveTimer += Time.fixedDeltaTime;
       if (moveTimer < movementDelay) return;
       moveTimer = 0;
+
+      foreach (Enemy enemy in enemies) enemy.ChangeSprite();
 
       if (stepDown)
       {
@@ -153,7 +158,7 @@ namespace SpaceInvaders
     private bool HasReachedWall()
     {
       #region HasReachedWall
-      foreach (GameObject enemy in enemies)
+      foreach (Enemy enemy in enemies)
       {
         if (!enemy) continue;
 
