@@ -15,7 +15,7 @@ namespace SpaceInvaders
     private Vector2 dir;
     private Vector2 prevPos;
 
-    private float lifetime = 5;
+    private int lifetime = 5000;
     private Action onDestroy;
     #endregion
 
@@ -43,7 +43,7 @@ namespace SpaceInvaders
     private void OnDestroy()
     {
       #region OnDestroy
-      onDestroy();
+      onDestroy?.Invoke();
       #endregion
     }
     #endregion
@@ -55,10 +55,11 @@ namespace SpaceInvaders
     {
       #region Init
       this.type = type;
+      this.onDestroy = onDestroy;
       stepPx = type == BulletType.Player ? 4 : 3;
       dir = type == BulletType.Player ? Vector2.up : Vector2.down;
 
-      StartCoroutine("Die", lifetime);
+      _ = Die();
       #endregion
     }
 
@@ -73,11 +74,11 @@ namespace SpaceInvaders
     }
 
     /// <summary>Method</summary>
-    private IEnumerator Die()
+    private async Task Die()
     {
       #region HandleLife
+      await Task.Delay(lifetime);
       Destroy(gameObject);
-      return null;
       #endregion
     }
     #endregion

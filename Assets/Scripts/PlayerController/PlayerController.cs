@@ -20,7 +20,7 @@ namespace SpaceInvaders
 
 
     /// <summary>Input action in charge of movement</summary>
-    private PlayerControls playerControls = new PlayerControls();
+    private PlayerControls playerControls;
 
     private InputAction moveAction;
     private InputAction shootAction;
@@ -81,6 +81,7 @@ namespace SpaceInvaders
     private void BindControls()
     {
       #region BindControls
+      playerControls = new PlayerControls();
       playerControls.Enable();
       moveAction = playerControls.Player.Move;
       shootAction = playerControls.Player.Shoot;
