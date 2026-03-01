@@ -222,7 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57f1f83838cf868c4897c8d37e4bebd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpaceInvaders.PlayerController
-  atackCooldown: 0
   hasActiveBullet: 0
   bulletPrefab: {fileID: 2966429059808618479, guid: b1178d201e9c63ad59d7acfecb5cbe12, type: 3}
 --- !u!1 &693351620
@@ -337,10 +336,15 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2228492810161042951, guid: a82703825acb80b5692476542c174fc7, type: 3}
   enemySprites:
   - {fileID: 4773600122041589604, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
+  - {fileID: -638443171332479689, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
   - {fileID: -1428572451713796752, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
+  - {fileID: -4789670105439411607, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
   - {fileID: -1428572451713796752, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
+  - {fileID: -4789670105439411607, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
   - {fileID: 7411919347176863388, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
+  - {fileID: 7061801754131594114, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
   - {fileID: 7411919347176863388, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
+  - {fileID: 7061801754131594114, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}
 --- !u!1 &1764369495
 GameObject:
   m_ObjectHideFlags: 0
