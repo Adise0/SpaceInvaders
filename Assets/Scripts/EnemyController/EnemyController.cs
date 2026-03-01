@@ -285,7 +285,6 @@ namespace SpaceInvaders
     private void SpawnBullet(BulletType type, Enemy shooter)
     {
       #region SpawnBullet
-      Debug.Log($"Shooting from {shooter.col} {shooter.row}");
       GameObject instantiatedBullet = Instantiate(bulletPrefab, shooter.transform.position, Quaternion.identity);
       instantiatedBullet.GetComponent<Bullet>().Init(type, () =>
       {

@@ -2,6 +2,7 @@
 using SpaceInvaders.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace SpaceInvaders
 {
@@ -9,6 +10,8 @@ namespace SpaceInvaders
   public class PlayerController : MonoBehaviour, IDamagable
   {
     #region Data
+
+    public UIDocument uiDocument;
 
     [Header("Gameplay")]
     /// <summary>The player movement speed</summary>
@@ -83,6 +86,7 @@ namespace SpaceInvaders
     {
       #region TakDamage
       lifes--;
+      uiDocument.rootVisualElement.Q<Label>("L").text = $"{lifes}";
       if (lifes > 0) return;
       // TODO: Game over
       #endregion
