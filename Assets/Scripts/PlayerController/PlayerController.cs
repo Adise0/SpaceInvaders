@@ -129,6 +129,7 @@ namespace SpaceInvaders
       if (hasActiveBullet) return;
       hasActiveBullet = true;
 
+
       GameObject instantiatedBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
       instantiatedBullet.GetComponent<Bullet>().Init(BulletType.Player, () =>
       {

@@ -8,6 +8,7 @@ namespace SpaceInvaders
 
     #region Data
     public Sprite[] sprites = new Sprite[2];
+    public Sprite deathSprite;
     private short currentSprite = 0;
 
     private SpriteRenderer spriteRenderer;
@@ -37,7 +38,8 @@ namespace SpaceInvaders
       #region TakDamage
 
       GetComponent<BoxCollider2D>().enabled = false;
-      Destroy(gameObject, 1);
+      spriteRenderer.sprite = deathSprite;
+      Destroy(gameObject, 0.5f);
       #endregion
     }
 

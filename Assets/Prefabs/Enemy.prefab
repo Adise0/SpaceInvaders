@@ -107,7 +107,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -128,3 +128,4 @@ MonoBehaviour:
   sprites:
   - {fileID: 0}
   - {fileID: 0}
+  deathSprite: {fileID: -7377819553374844296, guid: 3a7f6724f44052bfa834541fba7dc4db, type: 3}

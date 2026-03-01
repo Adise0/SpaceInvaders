@@ -35,6 +35,7 @@ namespace SpaceInvaders
       #region OnTriggerEnter2D
       TryGetComponent(out IDamagable foundComponent);
       foundComponent?.TakDamage(this);
+      Destroy(gameObject);
       #endregion
     }
 
