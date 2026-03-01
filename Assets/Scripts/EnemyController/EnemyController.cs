@@ -47,7 +47,7 @@ namespace SpaceInvaders
 
 
     [Header("Shooting")]
-    private float reloadTime = 0.35f;
+    private float reloadTime = 2.4f;
     private float timeSinceLastShot;
     private int nOfBullets;
     public GameObject bulletPrefab;
@@ -124,6 +124,10 @@ namespace SpaceInvaders
       enemies.Remove(enemy);
       movementDelay = enemies.Count / 60f;
       movementDelay = Mathf.Max(movementDelay, 1f / 60f);
+
+      float percent = enemies.Count / (Rows * EnemiesPerRow);
+
+      reloadTime = Mathf.Lerp(2.4f, 0.35f, percent);
       #endregion
     }
 

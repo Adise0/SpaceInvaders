@@ -16,8 +16,12 @@ namespace SpaceInvaders
     private Vector2 prevPos;
     private bool didHit = false;
     private Action onDestroy;
-
     private SpriteRenderer spriteRenderer;
+
+    public Sprite playerSprite;
+    public Sprite rollingSprite;
+    public Sprite plungerSprite;
+    public Sprite squigillySprite;
     #endregion
 
 
@@ -37,30 +41,27 @@ namespace SpaceInvaders
       #region OnTriggerEnter2D
       if (didHit) return;
 
-      foreach (MonoBehaviour behaviour in collision.gameObject.GetComponents<MonoBehaviour>())
+      IDamagable damagable;
+      if (type == BulletType.Player)
       {
-        if (behaviour is not IDamagable foundComponent) continue;
-        didHit = true;
-        foundComponent?.TakDamage(this);
-        Destroy(gameObject);
-        break;
+        collision.gameObject.TryGetComponent(out Enemy foundEnemy);
+        damagable = foundEnemy;
+      }
+      else
+      {
+        collision.gameObject.TryGetComponent(out PlayerController player);
+        damagable = player;
       }
 
-      // IDamagable damagable;
-      // if (type == BulletType.Player)
-      // {
-      //   TryGetComponent(out Enemy foundEnemy);
-      //   damagable = foundEnemy;
-      // }
-      // else
-      // {
-      //   TryGetComponent(out PlayerController player);
-      //   damagable = player;
-      // }
-
-      // didHit = true;
-      // damagable?.TakDamage(this);
-      // Destroy(gameObject);
+      if (damagable == null)
+      {
+        collision.gameObject.TryGetComponent(out Bunker bunker);
+        if (bunker) Destroy(gameObject);
+        return;
+      }
+      didHit = true;
+      damagable?.TakDamage(this);
+      Destroy(gameObject);
       #endregion
     }
 
@@ -85,6 +86,27 @@ namespace SpaceInvaders
       this.onDestroy = onDestroy;
       stepPx = type == BulletType.Player ? 4 : 3;
       dir = type == BulletType.Player ? Vector2.up : Vector2.down;
+
+      switch (type)
+      {
+        case BulletType.Player:
+          spriteRenderer.color = Color.green;
+          spriteRenderer.sprite = playerSprite;
+          break;
+
+        case BulletType.Rolling:
+          spriteRenderer.sprite = rollingSprite;
+          break;
+
+        case BulletType.Squigilly:
+          spriteRenderer.sprite = squigillySprite;
+          break;
+
+        case BulletType.Plunger:
+          spriteRenderer.sprite = plungerSprite;
+          break;
+
+      }
       #endregion
     }
 
@@ -104,7 +126,7 @@ namespace SpaceInvaders
     private void Die()
     {
       #region Die
-      if (transform.position.y < PixelPerfect.TopBoundPx * PixelPerfect.UnitsPerPixel) return;
+      if (transform.position.y < PixelPerfect.TopBoundPx * PixelPerfect.UnitsPerPixel && transform.position.y > PixelPerfect.LowBoundPx * PixelPerfect.UnitsPerPixel) return;
       Destroy(gameObject);
       #endregion
     }
