@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using SpaceInvaders.Data;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace SpaceInvaders
     private int stepPx;
     private Vector2 dir;
     private Vector2 prevPos;
+
+    private Action onDestroy;
     #endregion
 
 
@@ -32,12 +35,20 @@ namespace SpaceInvaders
       foundComponent?.TakDamage(this);
       #endregion
     }
+
+    /// <summary>Ran by unoty on destroy</summary>
+    private void OnDestroy()
+    {
+      #region OnDestroy
+      onDestroy();
+      #endregion
+    }
     #endregion
 
 
     #region Methods
     /// <summary>Initializes this bullet</summary>
-    private void Init(BulletType type)
+    private void Init(BulletType type, Action onDestroy)
     {
       #region Init
       this.type = type;

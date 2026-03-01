@@ -16,9 +16,14 @@ namespace SpaceInvaders
     /// <summary>The atack coolddown</summary>
     [SerializeField] private float atackCooldown;
 
+    [SerializeField] private bool hasActiveBullet;
+
 
     /// <summary>Input action in charge of movement</summary>
+    private PlayerControls playerControls = new PlayerControls();
+
     private InputAction moveAction;
+    private InputAction shootAction;
 
     [Header("Sprite")]
     private float halfWidth;
@@ -66,6 +71,7 @@ namespace SpaceInvaders
     {
       #region BindControls
       moveAction = InputSystem.actions["Move"];
+      shootAction = InputSystem.actions["Shoot"];
       #endregion
     }
 
