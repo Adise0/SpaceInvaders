@@ -48,7 +48,7 @@ namespace SpaceInvaders
 
     #region Methods
     /// <summary>Initializes this bullet</summary>
-    private void Init(BulletType type, Action onDestroy)
+    public void Init(BulletType type, Action onDestroy)
     {
       #region Init
       this.type = type;

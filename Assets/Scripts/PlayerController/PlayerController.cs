@@ -18,12 +18,16 @@ namespace SpaceInvaders
 
     [SerializeField] private bool hasActiveBullet;
 
+    [SerializeField] private GameObject bulletPrefab;
+
 
     /// <summary>Input action in charge of movement</summary>
     private PlayerControls playerControls = new PlayerControls();
 
     private InputAction moveAction;
     private InputAction shootAction;
+
+    private bool shootActionQueed = false;
 
     [Header("Sprite")]
     private float halfWidth;
@@ -40,11 +44,20 @@ namespace SpaceInvaders
       #endregion
     }
 
+    /// <summary>Ran by unity each frame</summary>
+    private void Update()
+    {
+      #region Update
+      CheckShootAction();
+      #endregion
+    }
+
     /// <summary>Ran by Unity each fixed tick</summary>
     private void FixedUpdate()
     {
       #region Update
       MovePlayer();
+      Shoot();
       #endregion
     }
     #endregion
@@ -75,6 +88,15 @@ namespace SpaceInvaders
       #endregion
     }
 
+    /// <summary>Checks if the should action was triggered</summary>
+    private void CheckShootAction()
+    {
+      #region CheckShootAction
+      if (shootActionQueed) return;
+      if (shootAction.WasPressedThisFrame()) shootActionQueed = true;
+      #endregion
+    }
+
     /// <summary>Handles the player movement</summary>
     private void MovePlayer()
     {
@@ -94,6 +116,23 @@ namespace SpaceInvaders
       transform.position = newPos;
 
 
+      #endregion
+    }
+
+
+    /// <summary>Handles the shooting</summary>
+    private void Shoot()
+    {
+      #region Shoot
+      shootActionQueed = false;
+      if (hasActiveBullet) return;
+      hasActiveBullet = true;
+
+      GameObject instantiatedBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+      instantiatedBullet.GetComponent<Bullet>().Init(BulletType.Player, () =>
+      {
+        hasActiveBullet = false;
+      });
       #endregion
     }
     #endregion
