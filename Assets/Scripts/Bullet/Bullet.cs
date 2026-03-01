@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SpaceInvaders.Data;
 using UnityEngine;
 
@@ -13,6 +15,7 @@ namespace SpaceInvaders
     private Vector2 dir;
     private Vector2 prevPos;
 
+    private float lifetime = 5;
     private Action onDestroy;
     #endregion
 
@@ -54,6 +57,8 @@ namespace SpaceInvaders
       this.type = type;
       stepPx = type == BulletType.Player ? 4 : 3;
       dir = type == BulletType.Player ? Vector2.up : Vector2.down;
+
+      StartCoroutine("Die", lifetime);
       #endregion
     }
 
@@ -64,6 +69,15 @@ namespace SpaceInvaders
       #region Move
       prevPos = transform.position;
       transform.position += (Vector3)(dir * stepPx * PixelPerfect.UnitsPerPixel);
+      #endregion
+    }
+
+    /// <summary>Method</summary>
+    private IEnumerator Die()
+    {
+      #region HandleLife
+      Destroy(gameObject);
+      return null;
       #endregion
     }
     #endregion

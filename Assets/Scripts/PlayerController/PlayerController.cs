@@ -13,8 +13,6 @@ namespace SpaceInvaders
     [Header("Gameplay")]
     /// <summary>The player movement speed</summary>
     [SerializeField] private const float MovementStep = 2;
-    /// <summary>The atack coolddown</summary>
-    [SerializeField] private float atackCooldown;
 
     [SerializeField] private bool hasActiveBullet;
 
@@ -83,8 +81,9 @@ namespace SpaceInvaders
     private void BindControls()
     {
       #region BindControls
-      moveAction = InputSystem.actions["Move"];
-      shootAction = InputSystem.actions["Shoot"];
+      playerControls.Enable();
+      moveAction = playerControls.Player.Move;
+      shootAction = playerControls.Player.Shoot;
       #endregion
     }
 
@@ -124,6 +123,7 @@ namespace SpaceInvaders
     private void Shoot()
     {
       #region Shoot
+      if (!shootActionQueed) return;
       shootActionQueed = false;
       if (hasActiveBullet) return;
       hasActiveBullet = true;

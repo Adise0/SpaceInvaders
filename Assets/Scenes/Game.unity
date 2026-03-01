@@ -223,6 +223,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpaceInvaders.PlayerController
   atackCooldown: 0
+  hasActiveBullet: 0
+  bulletPrefab: {fileID: 2966429059808618479, guid: b1178d201e9c63ad59d7acfecb5cbe12, type: 3}
 --- !u!1 &693351620
 GameObject:
   m_ObjectHideFlags: 0
